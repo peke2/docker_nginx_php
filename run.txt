@@ -1,0 +1,5 @@
+docker run -d -v /var/www:/var/www -v /var/log/nginx:/var/log/nginx -p 80:80 -p 81:81 6f28afe0a1ee /sbin/init
+
+docker run -d -v /var/www:/var/www -v /var/log/nginx:/var/log/nginx -p 80:80 -p 81:81 peke2/load_count /sbin/init
+
+docker run -d --name php7 -v /var/www:/var/www -v /var/log/nginx2:/var/log/nginx -p 82:80 -p 83:81 peke2/nginx-php7:1.0 /sbin/init
