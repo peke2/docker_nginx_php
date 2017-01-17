@@ -34,4 +34,4 @@ COPY ${SRC_PATH}php.ini /usr/local/lib/
 COPY ${SRC_PATH}nginx.conf /usr/local/nginx/conf/
 
 EXPOSE 80 81
-
+ENTRYPOINT ["/sbin/init"]
