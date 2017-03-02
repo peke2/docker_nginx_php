@@ -1,4 +1,4 @@
-FROM centos:6.6
+FROM centos:6.8
 
 ENV PHP=php-5.6.16
 ENV NGINX=nginx-1.8.0
