@@ -1,4 +1,4 @@
-FROM centos:6.8
+FROM centos:6.6
 
 ENV PHP=php-7.0.1
 ENV NGINX=nginx-1.8.0
@@ -12,6 +12,8 @@ COPY ${SRC_PATH}${NGINX}.tar.gz $DST_PATH
 COPY ${SRC_PATH}${PHP}.tar.gz $DST_PATH
 COPY ${SRC_PATH}${ZLIB}.tar.gz $DST_PATH
 COPY ${SRC_PATH}${LIBMCRYPT}.tar.gz $DST_PATH
+
+RUN yum install -y yum-plugin-ovl
 
 RUN yum install wget -y && yum install tar -y && yum install gcc -y && yum install gcc-c++ -y && yum install pcre-devel -y
 RUN cd ${DST_PATH} && tar xzfv ${ZLIB}.tar.gz && cd ${ZLIB} && ./configure && make && make install && make clean
