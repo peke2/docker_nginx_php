@@ -1,4 +1,4 @@
 #!/bin/sh
 
-sudo docker start test-db
-sudo docker start nginx-php
+docker start test-db
+docker start nginx-php
