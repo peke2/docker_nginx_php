@@ -1,6 +1,6 @@
 FROM centos:6.6
 
-ENV PHP=php-7.0.1
+ENV PHP=php-7.1.9
 ENV NGINX=nginx-1.8.0
 ENV ZLIB=zlib-1.2.8
 ENV LIBMCRYPT=libmcrypt-2.5.8
