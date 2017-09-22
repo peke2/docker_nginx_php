@@ -9,6 +9,7 @@ services:
       - db
     ports:
       - 80:80
+      - 81:81
     volumes:
       - /var/www:/var/www
     links:
