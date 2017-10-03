@@ -35,5 +35,9 @@ RUN mkdir /var/log/nginx && mkdir /var/www
 COPY ${SRC_PATH}php.ini /usr/local/lib/
 COPY ${SRC_PATH}nginx.conf /usr/local/nginx/conf/
 
+RUN yum -y install ntp && mv /etc/ntp.conf /etc/ntp.conf.org
+COPY ${SRC_PATH}ntp.conf /etc
+RUN /etc/init.d/ntpd start && chkconfig ntpd on
+
 EXPOSE 80 81
 ENTRYPOINT ["/sbin/init"]
