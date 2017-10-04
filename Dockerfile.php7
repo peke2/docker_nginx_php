@@ -15,6 +15,7 @@ COPY ${SRC_PATH}${LIBMCRYPT}.tar.gz $DST_PATH
 
 RUN yum install -y yum-plugin-ovl
 
+# PHPのインストール
 RUN yum install wget -y && yum install tar -y && yum install gcc -y && yum install gcc-c++ -y && yum install pcre-devel -y
 RUN cd ${DST_PATH} && tar xzfv ${ZLIB}.tar.gz && cd ${ZLIB} && ./configure && make && make install && make clean
 RUN yum install curl-devel -y && yum install openssl-devel -y && yum install -y libxml2 libxml2-devel -y
@@ -26,6 +27,7 @@ RUN sed -e "s/=NONE/=\/usr\/local/" /usr/local/etc/php-fpm.conf.default | sed -e
 COPY ${SRC_PATH}php-fpm /etc/init.d/
 RUN chmod 755 /etc/init.d/php-fpm && chkconfig --add php-fpm
 
+# Nginxのインストール
 RUN groupadd -g 500 nginx && useradd -g nginx -u 500 -s /sbin/nologin nginx
 RUN cd ${DST_PATH} && tar xzfv ${NGINX}.tar.gz && cd ${NGINX} && ./configure --prefix=/usr/local/nginx && make && make install && make clean
 COPY ${SRC_PATH}nginx /etc/init.d/
@@ -35,6 +37,10 @@ RUN mkdir /var/log/nginx && mkdir /var/www
 COPY ${SRC_PATH}php.ini /usr/local/lib/
 COPY ${SRC_PATH}nginx.conf /usr/local/nginx/conf/
 
+# 時間をJSTに変更
+RUN mv /etc/localtime /etc/localtime.org && ln -s /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
+
+# NTPDを入れる
 RUN yum -y install ntp && mv /etc/ntp.conf /etc/ntp.conf.org
 COPY ${SRC_PATH}ntp.conf /etc
 RUN /etc/init.d/ntpd start && chkconfig ntpd on
