@@ -22,7 +22,8 @@ RUN yum install curl-devel -y && yum install openssl-devel -y && yum install -y 
 RUN cd ${DST_PATH} && tar xzfv ${LIBMCRYPT}.tar.gz && cd ${LIBMCRYPT} && ./configure && make && make install && make clean
 RUN cd ${DST_PATH} && tar xzfv ${PHP}.tar.gz && cd ${PHP} && ./configure --enable-mbregex --with-iconv --enable-mbstring --with-mysql=mysqlnd --with-mysqli=mysqlnd --with-pdo-mysql=mysqlnd --enable-ftp --with-zlib --with-curl --with-mcrypt --with-openssl --enable-fpm
 RUN cd ${DST_PATH}${PHP} && make && make install && make clean
-RUN cp /usr/local/etc/php-fpm.d/www.conf.default /usr/local/etc/php-fpm.d/www.conf
+#RUN cp /usr/local/etc/php-fpm.d/www.conf.default /usr/local/etc/php-fpm.d/www.conf
+COPY ${SRC_PATH}www.conf /usr/local/etc/php-fpm.d
 RUN sed -e "s/=NONE/=\/usr\/local/" /usr/local/etc/php-fpm.conf.default | sed -e "s/\/\*\.conf/\/www\.conf/" > /usr/local/etc/php-fpm.conf
 COPY ${SRC_PATH}php-fpm /etc/init.d/
 RUN chmod 755 /etc/init.d/php-fpm && chkconfig --add php-fpm
