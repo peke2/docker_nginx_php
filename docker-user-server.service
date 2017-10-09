@@ -6,9 +6,9 @@ After=vboxadd.service
 [Service]
 Type=oneshot
 RemainAfterExit=True
-ExecStart=/usr/local/bin/docker-compose -f /home/vagrant/docker-user-server/docker-compose.yml up -d
-ExecStop=/usr/local/bin/docker-compose -f /home/vagrant/docker-user-server/docker-compose.yml stop
-ExecReload=/usr/local/bin/docker-compose -f /home/vagrant/docker-user-server/docker-compose.yml up -d
+ExecStart=/usr/local/bin/docker-compose -f ~/docker-user-server/docker-compose.yml up -d
+ExecStop=/usr/local/bin/docker-compose -f ~/docker-user-server/docker-compose.yml stop
+ExecReload=/usr/local/bin/docker-compose -f ~/docker-user-server/docker-compose.yml up -d
 
 [Install]
 WantedBy=multi-user.target
