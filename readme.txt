@@ -5,13 +5,19 @@
 
 1. dockerはセットアップ済みで、各コマンドをsudoを使用せずに実行できるようになっていること
 
-2. このディレクトリの内容をサーバーに置く
+2. このディレクトリの内容をサーバーに置く		#cpの実行は試していない、対象の場所にコピー出来ればOK (2018.11.05)
+$ cp -r /vagrant/nginx-php/ /home/vagrant/docker-user-server
 
-3. 以下のコマンドを実行
-$ docker build -t nginx-php:1.0 .
-
-4. ビルド完了後以下のシェルを実行してコンテナを起動
-$ ./init.sh
-
-5. 以後のコンテナ起動には以下のシェルを実行
+3. 以下のシェルを実行(docker-composeを使用する形式に変更)
+$ cd /home/vagrant/docker-user-server
 $ ./start.sh
+
+
+//3. 以下のコマンドを実行
+//$ docker build -t nginx-php:1.0 .
+//
+//4. ビルド完了後以下のシェルを実行してコンテナを起動
+//$ ./init.sh
+//
+//5. 以後のコンテナ起動には以下のシェルを実行
+//$ ./start.sh
