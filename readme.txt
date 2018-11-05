@@ -12,12 +12,7 @@ $ cp -r /vagrant/nginx-php/ /home/vagrant/docker-user-server
 $ cd /home/vagrant/docker-user-server
 $ ./start.sh
 
-
-//3. 以下のコマンドを実行
-//$ docker build -t nginx-php:1.0 .
-//
-//4. ビルド完了後以下のシェルを実行してコンテナを起動
-//$ ./init.sh
-//
-//5. 以後のコンテナ起動には以下のシェルを実行
-//$ ./start.sh
+4. サービスを登録(VirtualBoxのファイル共有の初期化とdockerの起動タイミングがあるので、サービスを作成して対応している)
+$ cp docker-user-server.service /usr/lib/systemd/system
+$ sudo systemctl enable docker-user-server
+$ sudo systemctl start docker-user-server
