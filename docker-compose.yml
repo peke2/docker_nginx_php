@@ -9,10 +9,11 @@ services:
       - db
     ports:
       - 80:80
+      - 81:81
     volumes:
       - /var/www:/var/www
     links:
-      - db
+      - db:database
     privileged: true
   db:
     image: "mysql:5.6.25"
