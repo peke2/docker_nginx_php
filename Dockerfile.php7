@@ -5,45 +5,45 @@ ENV NGINX=nginx-1.8.0
 ENV ZLIB=zlib-1.2.8
 ENV LIBMCRYPT=libmcrypt-2.5.8
 
-ENV SRC_PATH=sources/
-ENV DST_PATH=/usr/local/src/
+ENV SRC_PATH=sources
+ENV DST_PATH=/usr/local/src
 
-COPY ${SRC_PATH}${NGINX}.tar.gz $DST_PATH
-COPY ${SRC_PATH}${PHP}.tar.gz $DST_PATH
-COPY ${SRC_PATH}${ZLIB}.tar.gz $DST_PATH
-COPY ${SRC_PATH}${LIBMCRYPT}.tar.gz $DST_PATH
+COPY ${SRC_PATH}/${NGINX}.tar.gz ${DST_PATH}/
+COPY ${SRC_PATH}/${PHP}.tar.gz ${DST_PATH}/
+COPY ${SRC_PATH}/${ZLIB}.tar.gz ${DST_PATH}/
+COPY ${SRC_PATH}/${LIBMCRYPT}.tar.gz ${DST_PATH}/
 
 RUN yum install -y yum-plugin-ovl
 
 # PHPのインストール
 RUN yum install wget -y && yum install tar -y && yum install gcc -y && yum install gcc-c++ -y && yum install pcre-devel -y
-RUN cd ${DST_PATH} && tar xzfv ${ZLIB}.tar.gz && cd ${ZLIB} && ./configure && make && make install && make clean
+RUN cd ${DST_PATH}/ && tar xzfv ${ZLIB}.tar.gz && cd ${ZLIB} && ./configure && make && make install && make clean
 RUN yum install curl-devel -y && yum install openssl-devel -y && yum install -y libxml2 libxml2-devel -y
-RUN cd ${DST_PATH} && tar xzfv ${LIBMCRYPT}.tar.gz && cd ${LIBMCRYPT} && ./configure && make && make install && make clean
-RUN cd ${DST_PATH} && tar xzfv ${PHP}.tar.gz && cd ${PHP} && ./configure --enable-mbregex --with-iconv --enable-mbstring --with-mysql=mysqlnd --with-mysqli=mysqlnd --with-pdo-mysql=mysqlnd --enable-ftp --with-zlib --with-curl --with-mcrypt --with-openssl --enable-fpm
-RUN cd ${DST_PATH}${PHP} && make && make install && make clean
+RUN cd ${DST_PATH}/ && tar xzfv ${LIBMCRYPT}.tar.gz && cd ${LIBMCRYPT} && ./configure && make && make install && make clean
+RUN cd ${DST_PATH}/ && tar xzfv ${PHP}.tar.gz && cd ${PHP} && ./configure --enable-mbregex --with-iconv --enable-mbstring --with-mysql=mysqlnd --with-mysqli=mysqlnd --with-pdo-mysql=mysqlnd --enable-ftp --with-zlib --with-curl --with-mcrypt --with-openssl --enable-fpm
+RUN cd ${DST_PATH}/${PHP} && make && make install && make clean
 #RUN cp /usr/local/etc/php-fpm.d/www.conf.default /usr/local/etc/php-fpm.d/www.conf
-COPY ${SRC_PATH}www.conf /usr/local/etc/php-fpm.d
+COPY ${SRC_PATH}/www.conf /usr/local/etc/php-fpm.d
 RUN sed -e "s/=NONE/=\/usr\/local/" /usr/local/etc/php-fpm.conf.default | sed -e "s/\/\*\.conf/\/www\.conf/" > /usr/local/etc/php-fpm.conf
-COPY ${SRC_PATH}php-fpm /etc/init.d/
+COPY ${SRC_PATH}/php-fpm /etc/init.d/
 RUN chmod 755 /etc/init.d/php-fpm && chkconfig --add php-fpm
 
 # Nginxのインストール
 RUN groupadd -g 500 nginx && useradd -g nginx -u 500 -s /sbin/nologin nginx
-RUN cd ${DST_PATH} && tar xzfv ${NGINX}.tar.gz && cd ${NGINX} && ./configure --prefix=/usr/local/nginx && make && make install && make clean
-COPY ${SRC_PATH}nginx /etc/init.d/
+RUN cd ${DST_PATH} && tar xzfv ${NGINX}.tar.gz && cd ${NGINX} && ./configure --prefix=${NGINX_PATH} && make && make install && make clean
+COPY ${SRC_PATH}/nginx /etc/init.d/
 RUN chmod 755 /etc/init.d/nginx && chkconfig --add nginx && chkconfig --level 35 nginx on
 RUN mkdir /var/log/nginx && mkdir /var/www
 
-COPY ${SRC_PATH}php.ini /usr/local/lib/
-COPY ${SRC_PATH}nginx.conf /usr/local/nginx/conf/
+COPY ${SRC_PATH}/php.ini /usr/local/lib/
+#COPY ${SRC_PATH}/nginx.conf /usr/local/nginx/conf/	#実行時に設定ファイルをマウントするので、ここではコピーしない
 
 # 時間をJSTに変更
 RUN mv /etc/localtime /etc/localtime.org && ln -s /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
 
 # NTPDを入れる
 RUN yum -y install ntp && mv /etc/ntp.conf /etc/ntp.conf.org
-COPY ${SRC_PATH}ntp.conf /etc
+COPY ${SRC_PATH}/ntp.conf /etc
 RUN /etc/init.d/ntpd start && chkconfig ntpd on
 
 EXPOSE 80 81
