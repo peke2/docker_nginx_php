@@ -13,6 +13,6 @@ $ cd /home/vagrant/docker-user-server
 $ ./start.sh
 
 4. サービスを登録(VirtualBoxのファイル共有の初期化とdockerの起動タイミングがあるので、サービスを作成して対応している)
-$ cp docker-user-server.service /usr/lib/systemd/system
+$ sudo cp docker-user-server.service /usr/lib/systemd/system
 $ sudo systemctl enable docker-user-server
 $ sudo systemctl start docker-user-server
