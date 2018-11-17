@@ -7,6 +7,7 @@ ENV LIBMCRYPT=libmcrypt-2.5.8
 
 ENV SRC_PATH=sources
 ENV DST_PATH=/usr/local/src
+ENV NGINX_PATH=/usr/local/nginx
 
 COPY ${SRC_PATH}/${NGINX}.tar.gz ${DST_PATH}/
 COPY ${SRC_PATH}/${PHP}.tar.gz ${DST_PATH}/
